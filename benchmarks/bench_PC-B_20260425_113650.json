@@ -1,0 +1,66 @@
+{
+  "node": "PC-B",
+  "timestamp": "2026-04-25T09:35:34.922544+00:00",
+  "system": {
+    "hostname": "ichekWorkpace",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "models": {
+    "phi3:mini": {
+      "prompts": [
+        {
+          "category": "reasoning",
+          "success": true,
+          "tok_per_sec": 14.18
+        },
+        {
+          "category": "code",
+          "success": true,
+          "tok_per_sec": 14.71
+        },
+        {
+          "category": "writing",
+          "success": true,
+          "tok_per_sec": 13.93
+        },
+        {
+          "category": "knowledge",
+          "success": true,
+          "tok_per_sec": 15.22
+        }
+      ],
+      "summary": {
+        "avg_tok_per_sec": 14.4,
+        "prompts_run": 4
+      }
+    },
+    "llama3.2:3b": {
+      "prompts": [
+        {
+          "category": "reasoning",
+          "success": true,
+          "tok_per_sec": 16.44
+        },
+        {
+          "category": "code",
+          "success": true,
+          "tok_per_sec": 16.52
+        },
+        {
+          "category": "writing",
+          "success": true,
+          "tok_per_sec": 16.44
+        },
+        {
+          "category": "knowledge",
+          "success": true,
+          "tok_per_sec": 16.54
+        }
+      ],
+      "summary": {
+        "avg_tok_per_sec": 16.48,
+        "prompts_run": 4
+      }
+    }
+  }
+}

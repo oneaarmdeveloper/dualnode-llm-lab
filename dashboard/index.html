@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DualNode Benchmark Dashboard</title>
+    <style>
+        :root { --bg: #0d1117; --card: #161b22; --text: #c9d1d9; --accent: #58a6ff; --bar-bg: #30363d; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+        h1 { border-bottom: 1px solid var(--bar-bg); padding-bottom: 20px; }
+        .upload-area { background: var(--card); padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 30px; border: 1px dashed var(--bar-bg); }
+        input[type="file"] { display: none; }
+        .btn { background: var(--accent); color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: inline-block; }
+        .card { background: var(--card); padding: 20px; border-radius: 8px; margin-bottom: 15px; }
+        .bar-container { height: 30px; background: var(--bar-bg); border-radius: 15px; overflow: hidden; margin-top: 10px; position: relative; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #238636, #2ea043); width: 0%; transition: width 1s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: bold; font-size: 14px; }
+        .model-name { font-weight: bold; font-size: 18px; margin-bottom: 5px; display: block; }
+        .stat { color: #8b949e; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <h1>📊 DualNode Benchmark Dashboard</h1>
+    
+    <div class="upload-area">
+        <p>Select your benchmark JSON file</p>
+        <label class="btn">
+            Load Results
+            <input type="file" id="fileInput" accept=".json">
+        </label>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = JSON.parse(e.target.result);
+                render(data);
+            };
+            reader.readAsText(file);
+        });
+
+        function render(data) {
+            const container = document.getElementById('results');
+            container.innerHTML = '';
+            
+            let html = `<div class="card"><h2>System: ${data.system.hostname || 'Unknown'}</h2><p class="stat">Node: ${data.node}</p></div>`;
+            
+            // Find max TPS for scaling
+            let maxTps = 0;
+            for (const model in data.models) {
+                if (data.models[model].summary.avg_tok_per_sec > maxTps) {
+                    maxTps = data.models[model].summary.avg_tok_per_sec;
+                }
+            }
+
+            for (const [name, details] of Object.entries(data.models)) {
+                const avg = details.summary.avg_tok_per_sec;
+                const width = maxTps > 0 ? (avg / maxTps) * 100 : 0;
+                
+                html += `
+                    <div class="card">
+                        <span class="model-name">${name}</span>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: ${width}%;">${avg} tok/s</div>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <span class="stat">Prompts: ${details.summary.prompts_run}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
