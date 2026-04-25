@@ -1,6 +1,4 @@
-
-```markdown
-# DualNode LLM Lab 🤖
+# DualNode LLM Lab
 
 > A comparative performance study of self-hosted Large Language Models on consumer Windows hardware — with reproducible benchmarks, a custom dashboard, and honest results.
 
@@ -12,7 +10,7 @@
 
 ---
 
-## 🎯 What This Project Is
+## What This Project Is
 
 Most "run AI locally" tutorials assume you own a gaming PC with 32+ GB RAM and a dedicated GPU. This project asks a more practical question:
 
@@ -24,7 +22,7 @@ If you have never installed an AI model before, this guide takes you from zero t
 
 ---
 
-## 💻 Test System (PC-B)
+## Test System (PC-B)
 
 | Component | Specification |
 |-----------|--------------|
@@ -36,31 +34,33 @@ If you have never installed an AI model before, this guide takes you from zero t
 | **OS** | Windows 11 Home, Build 26200 |
 | **Network** | Mobile hotspot (personal) |
 
-> ℹ️ This is a realistic consumer laptop — not a workstation. Results reflect what most users can expect.
+> This is a realistic consumer laptop — not a workstation. Results reflect what most users can expect.
 
 ---
 
-## 📊 Benchmark Results
+## Benchmark Results
 
 ### Performance Summary
 
 | Model | Size | Quantization | Avg Speed | Quality Rating | Notes |
 |-------|------|--------------|-----------|----------------|-------|
-| `llama3.2:3b` | 2.0 GB | Q4_K_M | **16.5 tok/s** | ⭐⭐⭐⭐ | Best speed/quality balance for 16 GB |
-| `phi3:mini` | 2.3 GB | Q4_K_M | 14.4 tok/s | ⭐⭐⭐⭐ | Excellent reasoning, slightly slower |
+| `llama3.2:3b` | 2.0 GB | Q4_K_M | **16.5 tok/s** | 4/5 | Best speed/quality balance for 16 GB |
+| `phi3:mini` | 2.3 GB | Q4_K_M | 14.4 tok/s | 4/5 | Excellent reasoning, slightly slower |
 
-*Metrics: 4 standardized prompts (reasoning, code, writing, knowledge), temperature=0.3, seed=42, num_predict=300. Full raw data in `benchmarks/`.*
+*Metrics: 4 standardized prompts (reasoning, code, writing, knowledge), temperature=0.3, seed=42, num_predict=300, 3 runs per prompt with mean reported. Full raw data in `benchmarks/`.*
 
 ### What "Tokens per Second" Means
 
 - **>20 tok/s**: Feels instantaneous, like typing
-- **10–20 tok/s**: Comfortable for interactive chat ✅ *Your results here*
+- **10–20 tok/s**: Comfortable for interactive chat
 - **5–10 tok/s**: Usable but noticeable delay
 - **<5 tok/s**: Frustrating for conversation; better for background tasks
 
+**Both tested models on PC-B land in the 10–20 tok/s band — comfortable interactive speed.**
+
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Windows 10 or 11 (64-bit)
@@ -92,7 +92,7 @@ Then visit: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 dualnode/
@@ -118,27 +118,27 @@ dualnode/
 
 ---
 
-## 🔍 Key Findings
+## Key Findings
 
-### ✅ What Works Well
+### What Works Well
 1. **16 GB RAM is sufficient** for 3B-parameter models at interactive speeds (>15 tok/s)
 2. **Integrated graphics work** — no dedicated GPU required for basic inference
 3. **Ollama + Open WebUI** provides a polished, ChatGPT-like experience locally
 4. **Small models are surprisingly capable** — Phi-3 Mini and Llama 3.2 3B handle reasoning, code, and writing tasks well
 
-### ⚠️ Real-World Constraints
+### Real-World Constraints
 1. **Network reliability matters** — Large model downloads (7B+) can fail on unstable/mobile connections due to DNS or CDN issues
 2. **Model self-reports are unreliable** — Models may claim to be cloud-based even when running locally; empirical testing is essential
 3. **RAM is the bottleneck** — Once a model loads, performance is CPU-bound; but loading requires contiguous free RAM
 
-### 📉 Where 16 GB Hits Limits
+### Where 16 GB Hits Limits
 - 7B+ models *can* run but may require careful memory management
 - Context windows >4096 tokens increase RAM pressure significantly
 - Running multiple models simultaneously is not feasible
 
 ---
 
-## 🛠️ Tools & Technologies
+## Tools & Technologies
 
 | Tool | Purpose | Why Chosen |
 |------|---------|------------|
@@ -150,7 +150,7 @@ dualnode/
 
 ---
 
-## 🔬 Methodology
+## Methodology
 
 ### Benchmark Protocol
 1. Close unnecessary applications to free RAM
@@ -162,7 +162,7 @@ dualnode/
    - Knowledge: TCP vs UDP explanation
 4. Capture Ollama's native timing metrics (`eval_duration`, `eval_count`)
 5. Compute tokens per second: `eval_count / (eval_duration_ns / 1e9)`
-6. Repeat for reproducibility
+6. Run each prompt 3 times; report the mean
 
 ### Why This Matters
 - Uses **model-reported timing** (more accurate than wall-clock)
@@ -172,7 +172,7 @@ dualnode/
 
 ---
 
-## 🌐 Network Notes
+## Network Notes
 
 During development, large model downloads (7B+) occasionally failed on mobile hotspot connections with DNS resolution errors:
 
@@ -194,7 +194,7 @@ dial tcp: lookup ...cloudflarestorage.com: no such host
 
 ---
 
-## 📈 Extending This Project
+## Extending This Project
 
 Ideas for further work:
 
@@ -206,7 +206,7 @@ Ideas for further work:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 This project is designed to be forked and extended. If you run benchmarks on different hardware:
 
@@ -217,19 +217,18 @@ This project is designed to be forked and extended. If you run benchmarks on dif
 
 ---
 
-## 📄 License
+## License
 
 MIT License — Use, extend, and learn freely.
 
-> Copyright © 2026 Chukwuebuka Anselm Icheku  
->  
-> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:  
->  
-> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  
->  
+> Copyright (c) 2026 Chukwuebuka Anselm Icheku
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+>
 > THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ---
 
 *Built for anyone who wants to understand what AI on their own hardware actually looks like — from the laptop under the desk to the home-lab box in the corner.*
-``` 
